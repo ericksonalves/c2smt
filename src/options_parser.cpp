@@ -7,7 +7,7 @@ options_parser::options_parser(const int argc, const char** argv)
 : m_argc(argc)
 {
     int i;
-    for (i = 1; i < argc; ++i)
+    for (i = 1; i < m_argc; ++i)
     {
         m_argv.push_back(argv[i]);
     }
