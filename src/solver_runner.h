@@ -9,11 +9,11 @@ public:
     solver_runner(const std::string& solver_command,
                   const std::string& solver_path);
     virtual ~solver_runner();
-    const std::string& solver_command() const
+    inline const std::string& solver_command() const
     {
         return m_solver_command;
     }
-    const std::string& solver_path() const
+    inline const std::string& solver_path() const
     {
         return m_solver_path;
     }
