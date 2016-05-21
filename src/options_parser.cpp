@@ -15,7 +15,7 @@ options_parser::options_parser(const int argc, const char** argv)
     m_input_file(""),
     m_z3_path("")
 {
-    int i;
+    unsigned int i;
     for (i = 1; i < m_argc; ++i)
     {
         m_argv.push_back(argv[i]);
@@ -27,19 +27,17 @@ options_parser::~options_parser()
     m_argv.clear();
 }
 
-inline void options_parser::m_error_no_input_file()
-{
-    std::cout << "Input file not set!" << std::endl;
-}
-
 inline void options_parser::m_show_c2smt_header()
 {
-    std::cout << "C2SMT v0.0.1" << std::endl;
+    std::cout << "* * *     C2SMT v0.0.1     * * *" << std::endl;
 }
 
 inline void options_parser::m_show_help()
 {
-    std::cout << "Usage" << std::endl;
+    std::cout << "Usage:                         Purpose:" << std::endl;
+    std::cout << " c2smt --help                   show help" << std::endl;
+    std::cout << " c2smt --version                show version" << std::endl;
+    std::cout << " c2smt file.c                   convert c code to smt-lib code" << std::endl;
 }
 
 const int options_parser::parse()
@@ -93,8 +91,7 @@ const int options_parser::parse()
 
     if (!m_is_input_file_set)
     {
-        m_error_no_input_file();
-        return -1;
+        return error_no_input_file;
     }
     else
     {

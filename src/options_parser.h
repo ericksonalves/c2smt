@@ -29,7 +29,6 @@ private:
     std::string m_z3_path;
     std::vector<std::string> m_argv;
 
-    inline void m_error_no_input_file();
     inline void m_show_c2smt_header();
     inline void m_show_help();
 };
