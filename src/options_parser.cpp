@@ -3,6 +3,7 @@
 #include <iostream>
 #include <regex>
 
+#include "preprocessor.h"
 #include "utils.h"
 #include "z3_runner.h"
 
@@ -109,6 +110,14 @@ const int options_parser::parse()
     if (!is_z3_available)
     {
         return error_z3_unavailable;
+    }
+
+    preprocessor preprocessor(m_input_file);
+    const std::vector<std::string> code = preprocessor.process();
+
+    for (const std::string& str : code)
+    {
+        std::cout << str << std::endl;
     }
 
     return 0;
