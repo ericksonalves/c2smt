@@ -1,8 +1,10 @@
 #include "options_parser.h"
 
+#include <fstream>
 #include <iostream>
 #include <regex>
 
+#include "parser.h"
 #include "preprocessor.h"
 #include "utils.h"
 #include "z3_runner.h"
@@ -96,8 +98,13 @@ const int options_parser::parse()
     }
     else
     {
-        std::cout << "Input file is " << m_input_file << std::endl;
-        std::cout << "Checking file availability" << std::endl;
+        std::cout << "Checking file availability in " << m_input_file << std::endl;
+        std::fstream file;
+        file.open(m_input_file);
+        if (!file.is_open())
+        {
+            return error_file_unavailable;
+        }
     }
 
     std::cout << "Checking Z3 availability in ";
@@ -113,12 +120,30 @@ const int options_parser::parse()
     }
 
     preprocessor preprocessor(m_input_file);
-    const std::vector<std::string> code = preprocessor.process();
+    std::vector<std::string> code = preprocessor.process();
 
-    for (const std::string& str : code)
+    // Comment this line to result in an unsat code
+    code.erase(code.end() - 1);
+
+    std::cout << "Generating SMT-LIB code" << std::endl;
+
+    parser parser;
+    parser.parse(code);
+
+    std::vector<std::string> output = utils::execute_command(z3_runner.run_file_command("c2smt.smt2"));
+
+    size_t end = output[0].size() - 1;
+
+    std::cout << "Generated code is ";
+
+    for (size_t i = 0; i != end; ++i)
     {
-        std::cout << str << std::endl;
+        std::cout << output[0][i];
     }
+
+    std::cout << std::endl;
+
+    utils::execute_command("rm -rf c2smt.smt2");
 
     return 0;
 }

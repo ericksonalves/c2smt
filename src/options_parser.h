@@ -9,9 +9,10 @@ const std::string input_file_regex = "(.*)(.c)";
 const std::string version_regex = "(--version)";
 const std::string z3_path_regex = "(--with-z3=)(.*)";
 
-const unsigned int error_no_input_file = 1;
-const unsigned int error_unknown_option = 2;
-const unsigned int error_z3_unavailable = 3;
+const unsigned int error_file_unavailable = 1;
+const unsigned int error_no_input_file = 2;
+const unsigned int error_unknown_option = 3;
+const unsigned int error_z3_unavailable = 4;
 
 class options_parser
 {

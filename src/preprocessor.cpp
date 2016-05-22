@@ -1,6 +1,5 @@
 #include "preprocessor.h"
 
-#include <iostream>
 #include <fstream>
 #include <regex>
 #include <sstream>
@@ -103,10 +102,10 @@ std::vector<std::string> preprocessor::process()
             const size_t end = (*code)[i].find('=');
             const std::string declaration = (*code)[i].substr(begin, type_end - begin);
             const std::string var = (*code)[i].substr(type_end + 1, end - type_end - 2);
-            const std::string assignment = (*code)[i].substr(end, (*code)[i].size() - 1);
+            const std::string assignment = (*code)[i].substr(end, (*code)[i].size() - end - 1);
             int initial_value = std::stoi(assignment.substr(2));
             initial_values.insert(std::make_pair(var, initial_value));
-            code_to_parse.push_back(declaration + " " + var + ";");
+            code_to_parse.push_back(declaration + " " + var);
             code_to_parse.push_back(var + " " + assignment);
         }
         else if (std::regex_match((*code)[i], std::regex(post_fixed_decrement_regex)))
@@ -212,7 +211,7 @@ std::vector<std::string> preprocessor::process()
                 {
                     second += std::to_string(second_operand_find->second - 1);
                 }
-                left_operation = "= " + first + " " + operand + " " + second + ";";
+                left_operation = "= " + first + " " + operand + " " + second;
             }
 
             unwound_code_to_parse[i] = var + std::to_string(assignee_counter) + " " + left_operation;
