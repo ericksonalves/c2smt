@@ -6,6 +6,7 @@
 
 const std::string help_regex = "(--help)";
 const std::string input_file_regex = "(.*)(.c)";
+const std::string delete_file_regex = "(--delete-file)";
 const std::string version_regex = "(--version)";
 const std::string z3_path_regex = "(--with-z3=)(.*)";
 
@@ -23,6 +24,7 @@ public:
 private:
     const int m_argc;
     bool m_is_help_requested;
+    bool m_is_delete_file_set;
     bool m_is_input_file_set;
     bool m_is_version_requested;
     bool m_is_z3_path_set;

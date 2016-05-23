@@ -12,6 +12,7 @@
 options_parser::options_parser(const int argc, const char** argv)
     : m_argc(argc),
     m_is_help_requested(false),
+    m_is_delete_file_set(false),
     m_is_input_file_set(false),
     m_is_version_requested(false),
     m_is_z3_path_set(false),
@@ -63,6 +64,10 @@ const int options_parser::parse()
         {
             m_input_file = option;
             m_is_input_file_set = true;
+        }
+        else if (std::regex_match(option, std::regex(delete_file_regex)))
+        {
+            m_is_delete_file_set = true;
         }
         else if (std::regex_match(option, std::regex(z3_path_regex)))
         {
@@ -143,7 +148,10 @@ const int options_parser::parse()
 
     std::cout << std::endl;
 
-    utils::execute_command("rm -rf c2smt.smt2");
+    if (m_is_delete_file_set)
+    {
+        utils::execute_command("rm -rf c2smt.smt2");
+    }
 
     return 0;
 }
